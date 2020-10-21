@@ -14,6 +14,7 @@ prepare src/activation_layer.c
 prepare src/connected_layer.c
 prepare tryhw0.py
 prepare hw0.ipynb
+prepare notes/hw0.txt
 
 tar cvzf hw0.tar.gz submit
 rm -rf submit/
