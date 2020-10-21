@@ -42,7 +42,7 @@ matrix forward_activation_layer(layer l, matrix x)
             sum += y.data[index];
         }
         if (a == SOFTMAX) {
-            for(j = 0; j < x.cols; ++j){
+            for(int j = 0; j < x.cols; ++j){
                 int index = i*x.cols + j;
                 y.data[index] /= sum;
             }
