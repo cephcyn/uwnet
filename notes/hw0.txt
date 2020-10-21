@@ -1,0 +1,64 @@
+## 4.2: Training a model on MNIST
+Training results:
+- Softmax (784x10 softmax), 128 batch, 5000 iter, 0.01 rate, 0.9 momentum, 0.0 decay
+    - 0.920 train, 0.921 test
+- Neural net (784x32 lrelu, 32x10 softmax), 128 batch, 5000 iter, 0.01 rate, 0.9 momentum, 0.0 decay
+    - 0.960 train, 0.956 test
+- Neural net (784x32 lrelu, 32x10 softmax), 128 batch, 5000 iter, 0.01 rate, 0.9 momentum, 0.1 decay
+    - 0.957 train, 0.955 test
+- Neural net (784x32 lrelu, 32x10 softmax), 128 batch, 5000 iter, 0.01 rate, 0.9 momentum, 0.01 decay
+    - 0.960 train, 0.956 test
+- Neural net (784x32 relu, 32x10 softmax), 128 batch, 5000 iter, 0.01 rate, 0.9 momentum, 0.01 decay
+    - 0.963 train, 0.956 test
+- Neural net (784x32 logistic, 32x10 softmax), 128 batch, 5000 iter, 0.01 rate, 0.9 momentum, 0.01 decay
+    - 0.930 train, 0.931 test
+- Neural net (784x64 lrelu, 64x10 softmax), 128 batch, 5000 iter, 0.01 rate, 0.9 momentum, 0.01 decay
+    - 0.968 train, 0.963 test
+- Neural net (784x64 lrelu, 64x10 softmax), 128 batch, 5000 iter, 0.01 rate, 0.5 momentum, 0.01 decay
+    - 0.927 train, 0.929 test
+- Neural net (784x64 lrelu, 64x10 softmax), 128 batch, 5000 iter, 0.01 rate, 0.7 momentum, 0.01 decay
+    - 0.940 train, 0.940 test
+- Neural net (784x64 lrelu, 64x10 softmax), 256 batch, 5000 iter, 0.01 rate, 0.9 momentum, 0.01 decay
+    - 0.969 train, 0.963 test
+- Neural net (784x64 lrelu, 64x10 softmax), 256 batch, 5000 iter, 0.05 rate, 0.9 momentum, 0.01 decay
+    - 0.991 train, 0.976 test
+- Neural net (784x64 lrelu, 64x10 softmax), 256 batch, 5000 iter, 0.1 rate, 0.9 momentum, 0.01 decay
+    - 0.994 train, 0.974 test
+
+## 4.3: Training a model on CIFAR
+Training results:
+- Softmax (3072x10 softmax), 128 batch, 5000 iter, 0.01 rate, 0.9 momentum, 0.0 decay
+    - 0.407 train, 0.372 test
+- Neural net (3072x32 lrelu, 32x10 softmax), 128 batch, 5000 iter, 0.01 rate, 0.9 momentum, 0.0 decay
+    - 0.451 train, 0.424 test
+- Neural net (3072x32 lrelu, 32x10 softmax), 128 batch, 5000 iter, 0.01 rate, 0.9 momentum, 0.01 decay
+    - 0.451 train, 0.430 test
+- Neural net (3072x32 lrelu, 32x10 softmax), 128 batch, 5000 iter, 0.01 rate, 0.9 momentum, 0.1 decay
+    - 0.439 train, 0.426 test
+- Neural net (3072x32 relu, 32x10 softmax), 128 batch, 5000 iter, 0.01 rate, 0.9 momentum, 0.01 decay
+    - 0.452 train, 0.425 test
+- Neural net (3072x32 logistic, 32x10 softmax), 128 batch, 5000 iter, 0.01 rate, 0.9 momentum, 0.01 decay
+    - 0.447 train, 0.435 test
+- Neural net (3072x64 lrelu, 64x10 softmax), 128 batch, 5000 iter, 0.01 rate, 0.9 momentum, 0.1 decay
+    - 0.457 train, 0.439 test
+- Neural net (3072x64 lrelu, 64x10 softmax), 128 batch, 5000 iter, 0.01 rate, 0.7 momentum, 0.1 decay
+    - 0.494 train, 0.474 test
+- Neural net (3072x64 lrelu, 64x10 softmax), 128 batch, 5000 iter, 0.01 rate, 0.5 momentum, 0.1 decay
+    - 0.475 train, 0.460 test
+- Neural net (3072x64 lrelu, 64x10 softmax), 256 batch, 5000 iter, 0.01 rate, 0.9 momentum, 0.01 decay
+    - 0.525 train, 0.483 test
+- Neural net (3072x64 lrelu, 64x10 softmax), 256 batch, 5000 iter, 0.05 rate, 0.9 momentum, 0.01 decay
+    - 0.496 train, 0.457 test
+- Neural net (3072x64 lrelu, 64x10 softmax), 256 batch, 5000 iter, 0.1 rate, 0.9 momentum, 0.01 decay
+    - 0.464 train, 0.427 test
+
+Thoughts:
+- CIFAR is a lot harder of a dataset than MNIST! We had a baseline performance that was only half as good.
+- Like MNIST, changing from a softmax to a NN model definitely improved performance.
+- Like MNIST, adding a small amount of decay (0 -> 0.01 -> 0.1) improves relative test performance slightly (as it should), but then decreases it again likely because of overgeneralization.
+- I didn't try linear activation function on either of these datasets because it was likely it would fail to perform as well as the others, but otherwise relu and lrelu did comparably on both datasets and logistic activation function did slightly worse on MNIST but still comparable on CIFAR. Activation functions are more complex to compare.
+- Like MNIST, increasing the number of hidden nodes (32 -> 64) increases performance. However, the effect is smaller on CIFAR.
+- Reducing momentum (0.9 -> 0.7 -> 0.5) had mixed effects.
+- Like MNIST, increasing batch size (128 -> 256) improved performance.
+- Increasing learning rate (0.01 -> 0.05 -> 0.1) had mixed effects: improved performance on MNIST, but reduced performance for CIFAR.
+
