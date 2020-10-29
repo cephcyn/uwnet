@@ -56,15 +56,15 @@ matrix im2col(image im, int size, int stride)
 
     // TODO: 5.1
     // Fill in the column matrix with patches from the image
-    int numPositions = im.w - (size - 1);
+    int numPositions = im.w + 2 - (size - 1);
     int strideCoeff = numPositions / stride + numPositions % stride;
-    int numPositions2 = im.h - (size - 1);
+    int numPositions2 = im.h + 2 - (size - 1);
     int strideCoeff2 = numPositions2 / stride + numPositions2 % stride;
     for (i = 0; i < rows; i++) {
         for (j = 0; j < cols; j++) {
             col.data[i*cols + j] = get_pixel(im,
-					     j % strideCoeff * stride + (i%(size*size))%size,
-					     j / strideCoeff * stride + (i%(size*size))/size,
+					     (j) % strideCoeff * stride + (i%(size*size))%size - 1,
+					     (j) / strideCoeff * stride + (i%(size*size))/size - 1,
 					     i/(size*size));    
 	}
     }
