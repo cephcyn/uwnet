@@ -195,7 +195,16 @@ matrix backward_convolutional_layer(layer l, matrix dy)
 // float decay: l2 regularization term
 void update_convolutional_layer(layer l, float rate, float momentum, float decay)
 {
-    // TODO: 5.3
+    // TODO (DONE-UNTESTED): 5.3
+    // Same as fully-connected layer! Apply updates using SGD update rule
+    // Update weights
+    axpy_matrix(decay, l.w, l.dw);
+    axpy_matrix(-rate, l.dw, l.w);
+    scal_matrix(momentum, l.dw);
+
+    // Update biases too, don't use weight decay for these
+    axpy_matrix(-rate, l.db, l.b);
+    scal_matrix(momentum, l.db);
 }
 
 // Make a new convolutional layer
