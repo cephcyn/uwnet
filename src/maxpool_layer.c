@@ -32,11 +32,6 @@ matrix forward_maxpool_layer(layer l, matrix in)
             // and the top-left corner of what we are scanning
             int miniRow = l.stride*outRow - kernelCenter;
             int miniCol = l.stride*outCol - kernelCenter;
-           // get the maximum value
-            float maxValue = in.data[i*in.cols 
-                                     + channel*l.width*l.height 
-                                     + miniRow*l.width 
-                                     + miniCol];
             int capRow = miniRow + l.size;
             int capCol = miniCol + l.size;
             if (miniRow < 0) {
@@ -51,6 +46,11 @@ matrix forward_maxpool_layer(layer l, matrix in)
             if (capCol > l.width) {
                 capCol = l.width;
             }
+            // get the maximum value
+            float maxValue = in.data[i*in.cols 
+                                     + channel*l.width*l.height 
+                                     + miniRow*l.width 
+                                     + miniCol];
             for (int scanRow = miniRow; scanRow < capRow; scanRow++) {
                 for (int scanCol = miniCol; scanCol < capCol; scanCol++) {
                     float scanValue = in.data[i*in.cols 
