@@ -48,7 +48,7 @@ matrix backward_convolutional_bias(matrix dy, int n)
 // returns: column matrix
 matrix im2col(image im, int size, int stride)
 {
-    int i, j, k;
+    int i, j;
     int outw = (im.w-1)/stride + 1;
     int outh = (im.h-1)/stride + 1;
     int rows = im.c*size*size;
@@ -92,7 +92,7 @@ matrix im2col(image im, int size, int stride)
 // image im: image to add elements back into
 image col2im(int width, int height, int channels, matrix col, int size, int stride)
 {
-    int i, j, k;
+    int i, j;
 
     image im = make_image(width, height, channels);
     int outw = (im.w-1)/stride + 1;
@@ -102,10 +102,10 @@ image col2im(int width, int height, int channels, matrix col, int size, int stri
     // Add values into image im from the column matrix
     int cols = col.cols;
     int kernelCenter = (size - 1) / 2;
-    for (int i = 0; i < rows; i++) {
+    for (i = 0; i < rows; i++) {
         int channel = i / (size * size);
         int kernelIndex = i % (size * size);
-        for (int j = 0; j < cols; j++) {
+        for (j = 0; j < cols; j++) {
             int x = stride*(j%outw) - kernelCenter + (kernelIndex%size);
             int y = stride*(j/outw) - kernelCenter + (kernelIndex/size);
             float prev = get_pixel(im, x, y, channel);
