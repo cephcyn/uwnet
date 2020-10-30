@@ -2,8 +2,11 @@ rm -rf submit/
 mkdir -p submit
 
 prepare () {
-    if [[ $(git diff origin -- $1 | wc -c) -eq 0 ]]; then 
-        echo "WARNING: $1 is unchanged according to git."
+    if [[ $(git diff origin -- $1 | wc -c) -eq 0 ]]; then
+        echo "WARNING: $1 is unchanged from origin according to git."
+        if [[ $(git diff origin upstream/master -- $1 | wc -c) -eq 0 ]]; then
+            echo "WARNING: $1 is ALSO unchanged from upstream according to git."
+        fi
     fi
     cp $1 submit/
 }
