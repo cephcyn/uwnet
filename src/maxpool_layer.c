@@ -21,8 +21,50 @@ matrix forward_maxpool_layer(layer l, matrix in)
     matrix out = make_matrix(in.rows, outw*outh*l.channels);
 
     // TODO: 6.1 - iterate over the input and fill in the output with max values
+    int kernelCenter = (l.size - 1) / 2;
 
-
+    for (int i = 0; i < out.rows; i++) {
+        for (int j = 0; j < out.cols; j++) {
+            int channel = j/(outw*outh);
+            // extract the "row and col" we are outputting to
+            int outRow = (j%(outw*outh))/outw;
+            int outCol = (j%(outw*outh))%outw;
+            // and the top-left corner of what we are scanning
+            int miniRow = l.stride*outRow - kernelCenter;
+            int miniCol = l.stride*outCol - kernelCenter;
+           // get the maximum value
+            float maxValue = in.data[i*in.cols 
+                                     + channel*l.width*l.height 
+                                     + miniRow*l.width 
+                                     + miniCol];
+            int capRow = miniRow + l.size;
+            int capCol = miniCol + l.size;
+            if (miniRow < 0) {
+                miniRow = 0;
+            }
+            if (miniCol < 0) {
+                miniCol = 0;
+            }
+            if (capRow > l.height) {
+                capRow = l.height;
+            }
+            if (capCol > l.width) {
+                capCol = l.width;
+            }
+            for (int scanRow = miniRow; scanRow < capRow; scanRow++) {
+                for (int scanCol = miniCol; scanCol < capCol; scanCol++) {
+                    float scanValue = in.data[i*in.cols 
+                                              + channel*l.width*l.height 
+                                              + scanRow*l.width 
+                                              + scanCol];
+                    if (scanValue > maxValue) {
+                        maxValue = scanValue;
+                    }
+                }
+            }
+            out.data[i*out.rows + j] = maxValue;
+        }
+    }
 
     return out;
 }
