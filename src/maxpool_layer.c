@@ -20,7 +20,7 @@ matrix forward_maxpool_layer(layer l, matrix in)
     int outh = (l.height-1)/l.stride + 1;
     matrix out = make_matrix(in.rows, outw*outh*l.channels);
 
-    // TODO: 6.1 - iterate over the input and fill in the output with max values
+    // TODO (DONE): 6.1 - iterate over the input and fill in the output with max values
     int kernelCenter = (l.size - 1) / 2;
 
     for (int i = 0; i < out.rows; i++) {
@@ -74,16 +74,66 @@ matrix forward_maxpool_layer(layer l, matrix in)
 // matrix dy: error term for the previous layer
 matrix backward_maxpool_layer(layer l, matrix dy)
 {
-    matrix in    = *l.x;
+    matrix in = *l.x;
     matrix dx = make_matrix(dy.rows, l.width*l.height*l.channels);
 
     int outw = (l.width-1)/l.stride + 1;
     int outh = (l.height-1)/l.stride + 1;
+
     // TODO: 6.2 - find the max values in the input again and fill in the
     // corresponding delta with the delta from the output. This should be
     // similar to the forward method in structure.
+    int kernelCenter = (l.size - 1) / 2;
 
-
+    for (int i = 0; i < dy.rows; i++) {
+        for (int j = 0; j < dy.cols; j++) {
+            int channel = j/(outw*outh);
+            // extract the "row and col" this frame starts at
+            int outRow = (j%(outw*outh))/outw;
+            int outCol = (j%(outw*outh))%outw;
+            // and the top-left corner of what we are scanning
+            int miniRow = l.stride*outRow - kernelCenter;
+            int miniCol = l.stride*outCol - kernelCenter;
+            int capRow = miniRow + l.size;
+            int capCol = miniCol + l.size;
+            if (miniRow < 0) {
+                miniRow = 0;
+            }
+            if (miniCol < 0) {
+                miniCol = 0;
+            }
+            if (capRow > l.height) {
+                capRow = l.height;
+            }
+            if (capCol > l.width) {
+                capCol = l.width;
+            }
+            // get the maximum value
+            int maxRow = miniRow;
+            int maxCol = miniCol;
+            float maxValue = in.data[i*in.cols
+                                     + channel*l.width*l.height
+                                     + miniRow*l.width
+                                     + miniCol];
+            for (int scanRow = miniRow; scanRow < capRow; scanRow++) {
+                for (int scanCol = miniCol; scanCol < capCol; scanCol++) {
+                    float scanValue = in.data[i*dy.cols
+                                              + channel*l.width*l.height
+                                              + scanRow*l.width
+                                              + scanCol];
+                    if (scanValue > maxValue) {
+                        maxRow = scanRow;
+                        maxCol = scanCol;
+                        maxValue = scanValue;
+                    }
+                }
+            }
+            dx.data[i*dx.rows 
+                    + channel*l.width*l.height 
+                    + maxRow*l.width 
+                    + maxCol] += dy.data[i*dy.cols + j];
+        }
+    }
 
     return dx;
 }
