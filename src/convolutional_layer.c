@@ -98,10 +98,20 @@ image col2im(int width, int height, int channels, matrix col, int size, int stri
     int outw = (im.w-1)/stride + 1;
     int rows = im.c*size*size;
 
-    // TODO: 5.2
+    // TODO (DONE): 5.2
     // Add values into image im from the column matrix
-    
-
+    int cols = col.cols;
+    int kernelCenter = (size - 1) / 2;
+    for (int i = 0; i < rows; i++) {
+        int channel = i / (size * size);
+        int kernelIndex = i % (size * size);
+        for (int j = 0; j < cols; j++) {
+            int x = stride*(j%outw) - kernelCenter + (kernelIndex%size);
+            int y = stride*(j/outw) - kernelCenter + (kernelIndex/size);
+            float prev = get_pixel(im, x, y, channel);
+            set_pixel(im, x, y, channel, prev + col.data[i * cols + j]);
+        }
+    }
 
     return im;
 }
