@@ -16,7 +16,6 @@ prepare src/convolutional_layer.c
 prepare src/maxpool_layer.c
 prepare tryhw1.py
 prepare hw1.ipynb
-prepare notes/hw1.txt
 
 tar cvzf hw1.tar.gz submit
 rm -rf submit/
