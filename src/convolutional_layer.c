@@ -73,6 +73,7 @@ matrix im2col(image im, int size, int stride)
             int x = stride*(j%outw) - kernelCenter + (kernelIndex%size);
             int y = stride*(j/outw) - kernelCenter + (kernelIndex/size);
             if (x < 0 || y < 0 || x >= im.w || y >= im.h) {
+                // Logic for padding
                 col.data[i*cols + j] = 0;
             } else {
                 col.data[i*cols + j] = get_pixel(im, x, y, channel);
