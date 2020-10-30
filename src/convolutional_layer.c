@@ -101,10 +101,6 @@ image col2im(int width, int height, int channels, matrix col, int size, int stri
     // TODO (DONE): 5.2
     // Add values into image im from the column matrix
     int cols = col.cols;
-    //int outh = (im.h-1)/stride + 1;
-    //int rows = im.c*size*size;
-    //int cols = outw * outh;
-
     int kernelCenter = (size - 1) / 2;
     for (int i = 0; i < rows; i++) {
         int channel = i / (size * size);
