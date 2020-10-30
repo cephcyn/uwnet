@@ -70,10 +70,13 @@ matrix im2col(image im, int size, int stride)
             // stride*(j/%outw) gives us the "center" pixel of the convolution in image coords
             // Then subtract kernelCenter to give us the top left of the conv in image coords
             // Then add (kernelIndex/%size) to give us the specific coords of the conv
-            col.data[i*cols + j] = get_pixel(im,
-                                             stride*(j%outw) - kernelCenter + (kernelIndex%size),
-                                             stride*(j/outw) - kernelCenter + (kernelIndex/size),
-                                             channel);
+            int x = stride*(j%outw) - kernelCenter + (kernelIndex%size);
+            int y = stride*(j/outw) - kernelCenter + (kernelIndex/size);
+            if (x < 0 || y < 0 || x >= im.w || y >= im.h) {
+                col.data[i*cols + j] = 0;
+            } else {
+                col.data[i*cols + j] = get_pixel(im, x, y, channel);
+            }
 	}
     }
 
