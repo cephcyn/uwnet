@@ -55,17 +55,21 @@ matrix im2col(image im, int size, int stride)
     int cols = outw * outh;
     matrix col = make_matrix(rows, cols);
 
-    // TODO: 5.1
+    // TODO (DONE): 5.1
     // Fill in the column matrix with patches from the image
-    int numPositions = im.w + 2 - (size - 1);
-    int strideCoeff = numPositions / stride + numPositions % stride;
+    int kernelCenter = (size - 1) / 2;
 
     for (i = 0; i < rows; i++) {
+        // the index of the channel we are writing in
+        int channel = i/(size*size);
+        // the index within the current convolution matrix we are writing
+        int kernelIndex = i%(size*size);
         for (j = 0; j < cols; j++) {
+            // Note that get_pixel already handles zero padding
             col.data[i*cols + j] = get_pixel(im,
-					     (j) % strideCoeff * stride + (i%(size*size))%size - 1,
-					     (j) / strideCoeff * stride + (i%(size*size))/size - 1,
-					     i/(size*size));    
+                                             stride*(j%outw) - kernelCenter + (kernelIndex%size),
+                                             stride*(j/outw) - kernelCenter + (kernelIndex/size),
+                                             channel);
 	}
     }
 
