@@ -17,6 +17,19 @@ def conv_net():
             make_activation_layer(SOFTMAX)]
     return make_net(l)
 
+def fc_net():
+    l = [   make_connected_layer(32 * 32 * 3, 320),
+            make_activation_layer(RELU),
+            make_connected_layer(320, 160),
+            make_activation_layer(RELU),
+            make_connected_layer(160, 80),
+            make_activation_layer(RELU),
+            make_connected_layer(80, 40),
+            make_activation_layer(RELU),
+            make_connected_layer(40, 10),
+            make_activation_layer(SOFTMAX)]
+    return make_net(l)
+
 print("loading data...")
 train = load_image_classification_data("cifar/cifar.train", "cifar/cifar.labels")
 test  = load_image_classification_data("cifar/cifar.test",  "cifar/cifar.labels")
@@ -63,3 +76,32 @@ print("test accuracy:     %f", accuracy_net(m, test))
 # Fully connected layer: 256*10 = 2,560
 #
 # Total # of operations: 1,108,480
+#
+# Based on our extensive architecture and hyperparameter tuning from HW0, we found that
+# we get similarly high  predictive performance with networks that are wide and shallow, and networks
+# that start wide and gradually contract. Because we are restricted to a model architecture
+# that has the same number of layers as the provided convolutional network, we decided to
+# design a network with 5 layers, which each hidden layer having half the number of hidden
+# units as the previous layer. We played around with the actual numbers until the total
+# number of connections/multiplications was roughly the same as the convolutional network
+# (1,108,480).
+#
+# For our Fully Connected Network:
+# Train Accuracy: 0.5534
+# Test Accuracy: 0.5202
+#
+# For the Convolutional Network:
+# Train Accuracy: 0.5571
+# Test Accuracy: 0.5514
+#
+# With a similar number of operations, the convnet performs slightly better than the fully connected
+# network. Specifically, we see that the convet achieves an additional 0.0312 in accuracy. This is encouraging
+# especially because it is closer to the Train Accuracy of 0.5571, which indicates a good fit to the data.
+# The Cifar dataset is much more difficult than MNIST, so this accuracy score is to be expected.
+#
+# We speculate that the observed performance gain we get when using the convnet is because in the convnet,
+# connections aren't made between very disparate pixels that are far apart from each other in the image.
+# Instead, we are able to encode some notion of locality by using filters to look at pixels that are in
+# close proximity to each other. The fully connected network must connect every pixel with every other pixel
+# in the image, even if they are very far apart, so some of these weights have less bearing on what is depicted
+# in the image. In a sense, they are "wasted" whereas each operation in the convnet is more likely to be relevant.
