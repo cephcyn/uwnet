@@ -62,7 +62,7 @@ matrix forward_maxpool_layer(layer l, matrix in)
                     }
                 }
             }
-            out.data[i*out.rows + j] = maxValue;
+            out.data[i*out.cols + j] = maxValue;
         }
     }
 
@@ -80,7 +80,7 @@ matrix backward_maxpool_layer(layer l, matrix dy)
     int outw = (l.width-1)/l.stride + 1;
     int outh = (l.height-1)/l.stride + 1;
 
-    // TODO: 6.2 - find the max values in the input again and fill in the
+    // TODO (DONE): 6.2 - find the max values in the input again and fill in the
     // corresponding delta with the delta from the output. This should be
     // similar to the forward method in structure.
     int kernelCenter = (l.size - 1) / 2;
