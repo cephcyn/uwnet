@@ -128,7 +128,7 @@ matrix backward_maxpool_layer(layer l, matrix dy)
                     }
                 }
             }
-            dx.data[i*dx.rows 
+            dx.data[i*dx.cols 
                     + channel*l.width*l.height 
                     + maxRow*l.width 
                     + maxCol] += dy.data[i*dy.cols + j];
