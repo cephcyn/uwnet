@@ -52,13 +52,14 @@ print("test accuracy:     %f", accuracy_net(m, test))
 # Thus, the output size is (32-3+2(1))/1 + 1 = 32.
 # Knowing this, the number of operations is follows: 32*32*3*3*3*8 = 221,184
 # 
-# 1st Maxpool layer: 32*32*3*3*8 = 73,728
+# 1st Conv layer: 221,184 (from example above)
+# 1st Maxpool layer: there's no multiplicaton operations in maxpool layers so ignore these
 # 2nd Conv layer: 16*16*3*3*8*16 = 294,912
-# 2nd Maxpool layer: 16*16*3*3*16 = 36,864
+# 2nd Maxpool layer: there's no multiplicaton operations in maxpool layers so ignore these
 # 3rd Conv layer: 8*8*3*3*16*32 = 294,912
-# 3rd Maxpool layer: 8*8*3*3*32 = 18,432
+# 3rd Maxpool layer: there's no multiplicaton operations in maxpool layers so ignore these
 # 4th Conv layer: 4*4*3*3*32*64 = 294,912
-# 4th Maxpool layer: 4*4*3*3*64 = 9,216
+# 4th Maxpool layer: there's no multiplicaton operations in maxpool layers so ignore these
 # Fully connected layer: 256*10 = 2,560
 #
-# Total # of operations: 1,025,536
+# Total # of operations: 1,108,480
