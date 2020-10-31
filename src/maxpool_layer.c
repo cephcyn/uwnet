@@ -62,7 +62,7 @@ matrix forward_maxpool_layer(layer l, matrix in)
                     }
                 }
             }
-            out.data[i*out.rows + j] = maxValue;
+            out.data[i*out.cols + j] = maxValue;
         }
     }
 

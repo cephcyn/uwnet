@@ -44,4 +44,21 @@ print("test accuracy:     %f", accuracy_net(m, test))
 # Why are you seeing these results? Speculate based on the information you've gathered and what you know about DL and ML.
 # Your answer:
 #
-
+# For each layer, the output volume's spatial size is: (W-K+2P)/S + 1
+# Where W is the input volume, K is the kernel size, P is the padding amount,
+# and S is the stride.
+#
+# For example, for the first conv layer, the input is 32*32*3 with 8 filters, each 3*3 with a stride of 1.
+# Thus, the output size is (32-3+2(1))/1 + 1 = 32.
+# Knowing this, the number of operations is follows: 32*32*3*3*3*8 = 221,184
+# 
+# 1st Maxpool layer: 32*32*3*3*8 = 73,728
+# 2nd Conv layer: 16*16*3*3*8*16 = 294,912
+# 2nd Maxpool layer: 16*16*3*3*16 = 36,864
+# 3rd Conv layer: 8*8*3*3*16*32 = 294,912
+# 3rd Maxpool layer: 8*8*3*3*32 = 18,432
+# 4th Conv layer: 4*4*3*3*32*64 = 294,912
+# 4th Maxpool layer: 4*4*3*3*64 = 9,216
+# Fully connected layer: 256*10 = 2,560
+#
+# Total # of operations: 1,025,536
