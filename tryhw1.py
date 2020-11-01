@@ -78,7 +78,7 @@ print("test accuracy:     %f", accuracy_net(m, test))
 # Total # of operations: 1,108,480
 #
 # Based on our extensive architecture and hyperparameter tuning from HW0, we found that
-# we get similarly high  predictive performance with networks that are wide and shallow, and networks
+# we get similarly high predictive performance with networks that are wide and shallow, and networks
 # that start wide and gradually contract. Because we are restricted to a model architecture
 # that has the same number of layers as the provided convolutional network, we decided to
 # design a network with 5 layers, which each hidden layer having half the number of hidden
