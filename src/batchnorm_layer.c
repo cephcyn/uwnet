@@ -100,6 +100,19 @@ matrix delta_mean(matrix d, matrix v)
     int groups = v.cols;
     matrix dm = make_matrix(1, groups);
     // TODO 7.3 - Calculate dL/dm
+    int i, j;
+    int n = d.cols / groups;
+    float eps = 0.00001f;
+    for(j = 0; j < d.cols; ++j){
+        for(i = 0; i < d.rows; ++i){
+            dm.data[j/n] += d.data[i*d.cols + j];
+        }
+    }
+
+    for(i = 0; i < dm.cols; ++i){
+        dm.data[i] = dm.data[i] * (-1 / sqrt(v.data[i] + eps));
+    }
+
     return dm;
 }
 
