@@ -25,7 +25,7 @@ print
 
 print("making model...")
 batch = 128
-iters = 500
+iters = 100  # changed from 500 to 100 because we have 5 rounds of annealing eta
 rate = .1
 momentum = .9
 decay = .005
@@ -34,8 +34,10 @@ m = conv_net()
 print("training...")
 train_image_classifier(m, train, batch, iters, rate, momentum, decay)
 train_image_classifier(m, train, batch, iters, 0.08, momentum, decay)  # decrease learning rate
-train_image_classifier(m, train, batch, iters, 0.05, momentum, decay)  # decrease learning rate
+train_image_classifier(m, train, batch, iters, 0.04, momentum, decay)  # decrease learning rate
+train_image_classifier(m, train, batch, iters, 0.02, momentum, decay)  # decrease learning rate
 train_image_classifier(m, train, batch, iters, 0.01, momentum, decay)  # decrease learning rate
+
 print("done")
 print
 
@@ -70,7 +72,15 @@ print("test accuracy:     %f", accuracy_net(m, test))
 #
 # Training accuracy = 0.5976
 # Test accuracy = 0.5735
-
+#
+# In order to test the effect of annealing the learning rate with the same total number of training
+# iterations, we added one training round for a total of 5 rounds, with learning rate 0.1, 0.08, 0.04,
+# 0.02, and 0.01, respectively. Each round had 100 iterations, for a total of 500 iterations (same as 
+# before). As expected, we got slightly lower results, but they were still better than the network that
+# did not utilize batchnorm, as well as the network with batchnorm before every activation layer.
+#
+# Training accuracy = 0.5233
+# Test accuracy = 0.5155
 
 # How accurate is the fully connected network vs the convnet when they use similar number of operations?
 # Why are you seeing these results? Speculate based on the information you've gathered and what you know about DL and ML.
