@@ -49,6 +49,17 @@ matrix normalize(matrix x, matrix m, matrix v, int groups)
 {
     matrix norm = make_matrix(x.rows, x.cols);
     // TODO: 7.2 - Normalize x
+    int i, j;
+    int n = x.cols / groups;
+    float mean, var;
+    float eps = 0.00001f;
+    for(j = 0; j < x.cols; ++j){
+        var = v.data[j/n];
+        mean = m.data[j/n];
+        for(i = 0; i < x.rows; ++i){
+            norm.data[i*x.cols + j] = (x.data[i*x.cols + j] - mean) / sqrt(var + eps);
+        }
+    }
     return norm;
 }
 
