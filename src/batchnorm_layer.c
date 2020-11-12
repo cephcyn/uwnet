@@ -142,6 +142,22 @@ matrix delta_batch_norm(matrix d, matrix dm, matrix dv, matrix m, matrix v, matr
 {
     matrix dx = make_matrix(d.rows, d.cols);
     // TODO 7.5 - Calculate dL/dx
+    int i, j;
+    int n = dx.cols / m.cols;
+    int innerN = x.rows * n;
+    float eps = 0.00001f;
+    for(j = 0; j < dx.cols; ++j){
+        float std = 1/sqrt(v.data[j/n] + eps);
+        float deltaVar = dv.data[j/n];
+        float deltaMean = dm.data[j/n];
+        float mean = m.data[j/n];
+        for(i = 0; i < dx.rows; ++i){
+            dx.data[i*dx.cols + j] = d.data[i*dx.cols + j] * std
+                                     + deltaVar * (2 * (x.data[i*dx.cols + j] - mean) / innerN)
+                                     + deltaMean / innerN;
+        }
+    }
+
     return dx;
 }
 
