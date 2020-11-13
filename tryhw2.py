@@ -45,7 +45,7 @@ print("evaluating model...")
 print("training accuracy: %f", accuracy_net(m, train))
 print("test accuracy:     %f", accuracy_net(m, test))
 
-# Section 7.6 Responses
+# 7.6 Question: What do you notice about training the convnet with/without batch normalization? How does it affect convergence? How does it affect what magnitude of learning rate you can use? Write down any observations from your experiments:
 #
 # Training conv_net without batchnorm:
 # Training accuracy = 0.3507
