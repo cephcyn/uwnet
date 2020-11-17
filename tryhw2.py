@@ -12,7 +12,7 @@ def conv_net():
             make_batchnorm_layer(32),
             make_activation_layer(RELU),
             make_connected_layer(512, 10),
-            #make_batchnorm_layer(10),
+            make_batchnorm_layer(10),
             make_activation_layer(SOFTMAX)]
     return make_net(l)
 
@@ -81,9 +81,3 @@ print("test accuracy:     %f", accuracy_net(m, test))
 #
 # Training accuracy = 0.5233
 # Test accuracy = 0.5155
-
-# How accurate is the fully connected network vs the convnet when they use similar number of operations?
-# Why are you seeing these results? Speculate based on the information you've gathered and what you know about DL and ML.
-# Your answer:
-#
-
