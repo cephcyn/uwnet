@@ -12,7 +12,7 @@ echo "Creating tarball..."
 prepare src/batchnorm_layer.c
 prepare tryhw2.py
 prepare hw2.ipynb
-prepare short_answer.pdf
+prepare hw2_short_answer.pdf
 
 tar cvzf hw2.tar.gz submit
 rm -rf submit/
